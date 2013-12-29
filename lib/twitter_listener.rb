@@ -8,12 +8,17 @@ class TwitterListener
         config.oauth_token_secret = 'ShrYcGCrK6aHixuyvFGfAHnFGLPGZI2EdcskSin2IKKaT'
         config.auth_method        = :oauth
       end
+      Pusher.app_id = '62578'
+      Pusher.key = 'fa2fb92f0825a6998c53'
+      Pusher.secret = '2de1ef58a6caa96a5073'
       @client = TweetStream::Client.new
     end
 
     def follow_happiness
         @client.track('happiness')  do |status|
-          puts "#{status}"
+          #puts "#{status.attrs}"
+          #puts "[#{status.user.screen_name}] #{status.text}"
+          Pusher.trigger('happiness_channel', "#{status}", {tweet: "#{status.attrs}}"})
         end
     end
 end
