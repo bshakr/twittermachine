@@ -17,8 +17,8 @@ class TwitterListener
     def follow_happiness
         @client.track('happiness')  do |status|
           #puts "#{status.attrs}"
-          #puts "[#{status.user.screen_name}] #{status.text}"
-          Pusher.trigger('happiness_channel', "#{status}", {tweet: "#{status.attrs}}"})
+          puts "[#{status.user.screen_name}] #{status.text}"
+          Pusher.trigger('happiness_channel', "tweet", {tweet: "#{status.attrs.to_json}"})
         end
     end
 end
