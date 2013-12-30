@@ -8,17 +8,24 @@ class TwitterListener
         config.oauth_token_secret = 'ShrYcGCrK6aHixuyvFGfAHnFGLPGZI2EdcskSin2IKKaT'
         config.auth_method        = :oauth
       end
-      Pusher.app_id = '62578'
-      Pusher.key = 'fa2fb92f0825a6998c53'
-      Pusher.secret = '2de1ef58a6caa96a5073'
+      #Pusher.app_id = '62578'
+      #Pusher.key = 'fa2fb92f0825a6998c53'
+      #Pusher.secret = '2de1ef58a6caa96a5073'
       @client = TweetStream::Client.new
+
     end
 
     def follow_happiness
         @client.track('happiness')  do |status|
           #puts "#{status.attrs}"
           puts "[#{status.user.screen_name}] #{status.text}"
-          Pusher.trigger('happiness_channel', "tweet", {tweet: "#{status.attrs.to_json}"})
+          #Pusher.trigger('happiness_channel', "tweet", {tweet: "#{status.attrs.to_json}"})
+          connection = Faraday.new(:url => 'emberdash.herokuapp.com') do |faraday|
+            faraday.request  :url_encoded             # form-encode POST params
+            faraday.response :logger                  # log requests to STDOUT
+            faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
+          end
+          connection.post '/build_tweet', { tweet: status.attrs }
         end
     end
 end

@@ -1,7 +1,7 @@
 require "bundler/setup"
 require 'sinatra'
 require 'tweetstream'
-require 'pusher'
+require 'faraday'
 require 'json'
 
 require_relative 'lib/twitter_listener'
