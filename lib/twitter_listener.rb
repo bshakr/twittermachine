@@ -20,7 +20,7 @@ class TwitterListener
           #puts "#{status.attrs}"
           puts "[#{status.user.screen_name}] #{status.text}"
           #Pusher.trigger('happiness_channel', "tweet", {tweet: "#{status.attrs.to_json}"})
-          connection = Faraday.new(:url => 'emberdash.herokuapp.com') do |faraday|
+          connection = Faraday.new(:url => 'http://emberdash.herokuapp.com') do |faraday|
             faraday.request  :url_encoded             # form-encode POST params
             faraday.response :logger                  # log requests to STDOUT
             faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
